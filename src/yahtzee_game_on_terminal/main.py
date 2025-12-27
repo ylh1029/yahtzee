@@ -9,11 +9,23 @@
 
 import pandas as pd
 import random
+from importlib import resources
+from pathlib import Path
 
 #A function for setting up a game: game2_scoresheet provides a template for user_scores
 #that will be used to print user scores
-def set_up_game(filename="game2_scoresheet.csv"):
-    return pd.read_csv(filename)
+def set_up_game(filename="game_scoresheet.csv"):
+    # If the caller gives an explicit filesystem path, use it.
+    p = Path(filename)
+    if p.exists():
+        return pd.read_csv(p)
+
+    # Otherwise, treat it as a packaged resource: yahtzee_game/data/<filename>
+    resource = resources.files("yahtzee_game_on_terminal").joinpath("data", filename)
+
+    # as_file() gives you a real pathlib.Path when pandas needs a filesystem path
+    with resources.as_file(resource) as resource_path:
+        return pd.read_csv(resource_path)
 
 #Takes in a dataframe to print them nicely formatted
 def display_score(data):
