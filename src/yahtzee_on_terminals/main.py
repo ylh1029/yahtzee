@@ -14,14 +14,14 @@ from pathlib import Path
 
 #A function for setting up a game: game2_scoresheet provides a template for user_scores
 #that will be used to print user scores
-def set_up_game(filename="game_scoresheet.csv"):
+def set_up_game(filename="scoresheet.csv"):
     # If the caller gives an explicit filesystem path, use it.
     p = Path(filename)
     if p.exists():
         return pd.read_csv(p)
 
-    # Otherwise, treat it as a packaged resource: yahtzee_game/data/<filename>
-    resource = resources.files("yahtzee_game_on_terminal").joinpath("data", filename)
+    # Otherwise, treat it as a packaged resource: yahtzee_on_terminals/data/<filename>
+    resource = resources.files("yahtzee_on_terminals").joinpath("data", filename)
 
     # as_file() gives you a real pathlib.Path when pandas needs a filesystem path
     with resources.as_file(resource) as resource_path:
